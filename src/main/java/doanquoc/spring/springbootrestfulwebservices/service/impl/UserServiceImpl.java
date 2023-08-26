@@ -6,6 +6,7 @@ import doanquoc.spring.springbootrestfulwebservices.mapper.UserMapper;
 import doanquoc.spring.springbootrestfulwebservices.respository.UserRepository;
 import doanquoc.spring.springbootrestfulwebservices.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,15 +18,22 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+
+    private ModelMapper modelMapper;
+
+
     @Override
     public UserDto create(UserDto userDto) {
         //Convert User Dto to User jpa entity
-        User user = UserMapper.mapToUser(userDto);
+//        User user = UserMapper.mapToUser(userDto);
+        User user = modelMapper.map(userDto,User.class);
 
         User savedUser = userRepository.save(user);
 
         //convert user jpa entity to user dto
-        UserDto savedUserDto =  UserMapper.mapToUserDto(savedUser);
+//        UserDto savedUserDto =  UserMapper.mapToUserDto(savedUser);
+        UserDto savedUserDto = modelMapper.map(savedUser,UserDto.class);
+        System.out.println(savedUserDto);
         return savedUserDto;
     }
 
@@ -44,12 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(Long userId, UserDto userDto) {
+    public UserDto updateUser(Long userId, User user) {
 
         User existingUser = userRepository.findById(userId).get();
-        existingUser.setFirstName(userDto.getFirstName());
-        existingUser.setLastName(userDto.getLastName());
-        existingUser.setEmail(userDto.getEmail());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
         userRepository.save(existingUser);
         return UserMapper.mapToUserDto(existingUser);
     }

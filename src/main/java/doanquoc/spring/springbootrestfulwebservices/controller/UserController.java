@@ -1,7 +1,9 @@
 package doanquoc.spring.springbootrestfulwebservices.controller;
 
 import doanquoc.spring.springbootrestfulwebservices.dto.UserDto;
+import doanquoc.spring.springbootrestfulwebservices.entity.User;
 import doanquoc.spring.springbootrestfulwebservices.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +21,8 @@ public class UserController {
     // build create User REST api
 
     @PostMapping
-    public ResponseEntity<UserDto>  createUser(@RequestBody UserDto user){
-        UserDto savedUser = userService.create(user);
+    public ResponseEntity<UserDto>  createUser(@Valid  @RequestBody UserDto userDto){
+        UserDto savedUser = userService.create(userDto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
@@ -43,7 +45,7 @@ public class UserController {
     // build update user rest api
     // http://localhost:8080/api/users/1
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId,@RequestBody UserDto user){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId,@Valid @RequestBody User user){
         UserDto updatedUser = userService.updateUser(userId, user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
