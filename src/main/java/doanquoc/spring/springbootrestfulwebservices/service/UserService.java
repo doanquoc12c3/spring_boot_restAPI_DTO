@@ -1,17 +1,17 @@
 package doanquoc.spring.springbootrestfulwebservices.service;
 
-import doanquoc.spring.springbootrestfulwebservices.entity.User;
+import doanquoc.spring.springbootrestfulwebservices.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
-    User create(User user);
+    UserDto create(UserDto user);
 
-    User getUserById(Long userId);
+    UserDto getUserById(Long userId);
 
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
-    User updateUser(Long userId, User user);
+    UserDto updateUser(Long userId, UserDto user);
 
     void deleteUser(Long userId);
 
